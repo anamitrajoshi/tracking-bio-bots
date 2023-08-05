@@ -1,0 +1,5 @@
+instructions page
+timer
+more wall_vals
+coins
+trophy
