@@ -12,7 +12,7 @@ SCREEN = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Menu")
 
 BG = pygame.image.load("assets/tbb.jpg")
-
+RULES = pygame.image.load(os.path.join("Assets", "rules.jpg"))
 def get_font(size): 
     return pygame.font.Font("assets/font.ttf", size)
 
@@ -32,17 +32,23 @@ def play():
     TREASURE_WIDTH, TREASURE_HEIGHT = cell_size - 5, cell_size
     WALL_WIDTH, WALL_HEIGHT = cell_size - 5, cell_size - 5
     WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+
     BOT_IMAGE = pygame.image.load(os.path.join('Assets','bot.png'))
     BOT = pygame.transform.scale(BOT_IMAGE, (BOT_WIDTH, BOT_HEIGHT))
+    
     TREASURE_IMAGE = pygame.image.load(os.path.join('Assets','treasure.png'))
     TREASURE = pygame.transform.scale(TREASURE_IMAGE, (TREASURE_WIDTH, TREASURE_HEIGHT))
 
     WALL_IMAGE = pygame.image.load(os.path.join('Assets','wall_image.jpg'))
     WALL_IMAGE = pygame.transform.scale(WALL_IMAGE, (cell_size, cell_size))
 
-    TROPHY_WIDTH, TROPHY_HEIGHT = 40, 60
-    TROPHY_IMAGE = pygame.image.load(os.path.join('Assets','treasure.png'))
+    TROPHY_WIDTH, TROPHY_HEIGHT = 100, 100
+    TROPHY_IMAGE = pygame.image.load(os.path.join('Assets','trophy.png'))
     TROPHY = pygame.transform.scale(TROPHY_IMAGE, (TROPHY_WIDTH, TROPHY_HEIGHT))
+
+    SAD_WIDTH, SAD_HEIGHT = 100, 100
+    SAD_IMAGE = pygame.image.load(os.path.join('Assets','sad.png'))
+    SAD = pygame.transform.scale(SAD_IMAGE, (SAD_WIDTH, SAD_HEIGHT))
 
     FIRE_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'burn.mp3'))
     COIN_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'coin.mp3'))
@@ -116,7 +122,8 @@ def play():
     def end():
 
         WIDTH, HEIGHT = 1280, 720
-        trophy = pygame.Rect(20, 100, TROPHY_WIDTH, TROPHY_HEIGHT)
+        trophy1 = pygame.Rect(200, 200, TROPHY_WIDTH, TROPHY_HEIGHT)
+        trophy2 = pygame.Rect(970, 200, TROPHY_WIDTH, TROPHY_HEIGHT)
         WIN = pygame.display.set_mode((WIDTH, HEIGHT))
         while True:
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
@@ -125,6 +132,8 @@ def play():
             OPTIONS_TEXT = get_font(60).render("You win!", True, "White")
             OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
             SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
+            WIN.blit(TROPHY, (trophy1.x, trophy1.y))
+            WIN.blit(TROPHY, (trophy2.x, trophy2.y))
 
             OPTIONS_BACK = Button(image=None, pos=(900, 460), 
                                 text_input="BACK", font=get_font(60), base_color="White", hovering_color="Green")
@@ -150,15 +159,19 @@ def play():
 
     def loss():
         WIDTH, HEIGHT = 1280, 720
-        trophy = pygame.Rect(20, 100, TROPHY_WIDTH, TROPHY_HEIGHT)
+        sad1 = pygame.Rect(200, 200, SAD_WIDTH, SAD_HEIGHT)
+        sad2 = pygame.Rect(970, 200, SAD_WIDTH, SAD_HEIGHT)
+
         WIN = pygame.display.set_mode((WIDTH, HEIGHT))
         while True:
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
             SCREEN.fill("black")
 
-            OPTIONS_TEXT = get_font(60).render("You lose :(", True, "White")
+            OPTIONS_TEXT = get_font(60).render("You lose", True, "White")
             OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
             SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
+            WIN.blit(SAD, (sad1.x, sad1.y))
+            WIN.blit(SAD, (sad2.x, sad2.y))
 
             OPTIONS_BACK = Button(image=None, pos=(900, 460), 
                                 text_input="BACK", font=get_font(60), base_color="White", hovering_color="Green")
@@ -242,14 +255,10 @@ def options():
      while True:
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
 
-        SCREEN.fill("white")
+        SCREEN.blit(RULES, (0, 0))
 
-        OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen.", True, "Black")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
-        SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
-
-        OPTIONS_BACK = Button(image=None, pos=(640, 460), 
-                            text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Green")
+        OPTIONS_BACK = Button(image=None, pos=(1100, 40), 
+                            text_input="BACK", font=get_font(45), base_color="White", hovering_color="Green")
 
         OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_BACK.update(SCREEN)
@@ -276,7 +285,7 @@ def main_menu():
         PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(640, 250), 
                             text_input="PLAY", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
         OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(640, 400), 
-                            text_input="OPTIONS", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
+                            text_input="RULES", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
         QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(640, 550), 
                             text_input="QUIT", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
 
