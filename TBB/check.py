@@ -103,6 +103,15 @@ def play():
             j, i = wall
             screen.blit(WALL_IMAGE, (j * cell_size, (rows - i - 1) * cell_size))
 
+    
+
+
+
+
+    def highlight_stuck_squares(stuck_squares):
+        for square in stuck_squares:
+            j, i = square
+            pygame.draw.rect(screen, YELLOW, (j * cell_size, (rows - 1 - i) * cell_size, cell_size, cell_size), 1)
 
     def create_grid(rows, columns):
         grid = []
@@ -148,95 +157,61 @@ def play():
 
             pygame.display.update()
 
-    def loss():
-        WIDTH, HEIGHT = 1280, 720
-        trophy = pygame.Rect(20, 100, TROPHY_WIDTH, TROPHY_HEIGHT)
-        WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-        while True:
-            OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-            SCREEN.fill("black")
-
-            OPTIONS_TEXT = get_font(60).render("You lose :(", True, "White")
-            OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
-            SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
-
-            OPTIONS_BACK = Button(image=None, pos=(900, 460), 
-                                text_input="BACK", font=get_font(60), base_color="White", hovering_color="Green")
-            OPTIONS_REPLAY = Button(image=None, pos=(400, 460), 
-                                text_input="REPLAY", font=get_font(60), base_color="White", hovering_color="Green")
-
-            OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
-            OPTIONS_BACK.update(SCREEN)
-            OPTIONS_REPLAY.changeColor(OPTIONS_MOUSE_POS)
-            OPTIONS_REPLAY.update(SCREEN)
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
-                        main_menu()
-                    if OPTIONS_REPLAY.checkForInput(OPTIONS_MOUSE_POS):
-                        play()
-
-            pygame.display.update()
-                
-
-    def main():
-        global screen, cell_size, rows, columns, wall_vals, stuck_timer
-
-        pygame.init()
-        cell_size = 90
-        rows = 8
-        columns = 8
-        wall_vals = [[1, 6, 3, 6], [2, 4, 2, 4], [4, 2, 7, 2]]
-        
-        bot = pygame.Rect(1, cell_size*rows - cell_size, BOT_WIDTH, BOT_HEIGHT)
-        treasure = pygame.Rect(cell_size*columns - cell_size, 0, TREASURE_WIDTH, TREASURE_HEIGHT)
         
 
-        screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption("Game")
+# Create a display window
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Game")
 
-        running = True
-        grid = create_grid(rows, columns)
-        clock = pygame.time.Clock()
-        
-        start_time = pygame.time.get_ticks()
-        while running:
-            clock.tick(FPS)
-            timer_interval = 8000
-            MENU_MUSIC.play()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-            screen.fill((0, 0, 0))
-            draw_grid(rows, columns)
-            draw_walls(wall_vals)
-            keys_pressed = pygame.key.get_pressed()
-            bot_movement(grid, keys_pressed, bot, wall_vals)
-            stuck_squares_count = count_stuck_squares(rows, columns, wall_vals)
-            WIN.blit(TREASURE,(treasure.x, treasure.y))
-            WIN.blit(BOT, (bot.x, bot.y))
-            current_time = pygame.time.get_ticks()  # Get the current time in milliseconds
+# Load images (you need to have these loaded)
+BOT = pygame.Surface((BOT_WIDTH, BOT_HEIGHT))
+TREASURE = pygame.Surface((TREASURE_WIDTH, TREASURE_HEIGHT))
+# Load other assets like MENU_MUSIC, etc.
 
-            if current_time - start_time >= timer_interval:
-                MENU_MUSIC.stop()
-                FIRE_SOUND.play()
-                loss()
-            
-                    
+def main():
+    global screen
 
-            pygame.display.flip()
+    cell_size = 90
+    rows = 8
+    columns = 8
+    wall_vals = [[1, 6, 3, 6], [2, 4, 2, 4], [4, 2, 7, 2]]
+    bot = pygame.Rect(1, cell_size * rows - cell_size, BOT_WIDTH, BOT_HEIGHT)
+    treasure = pygame.Rect(cell_size * columns - cell_size, 0, TREASURE_WIDTH, TREASURE_HEIGHT)
 
-        pygame.quit()
-        sys.exit()
+    clock = pygame.time.Clock()
+    start_time = pygame.time.get_ticks()  # Get the initial time in milliseconds
+    timer_interval = 1000  # Timer interval in milliseconds (1 second)
 
+    running = True
+    while running:
+        clock.tick(FPS)
+        current_time = pygame.time.get_ticks()  # Get the current time in milliseconds
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-    if __name__ == "__main__":
-        main()
+        # Rest of your game loop code
+
+        screen.fill((0, 0, 0))
+        # Draw game elements
+        pygame.draw.rect(screen, (255, 0, 0), bot)  # Just a placeholder for bot
+        pygame.draw.rect(screen, (0, 255, 0), treasure)  # Just a placeholder for treasure
+
+        # Check and handle timer expiration
+        if current_time - start_time >= timer_interval:
+            print("Timer expired!")
+            # Reset the timer
+            start_time = current_time
+
+        pygame.display.flip()
+
+    pygame.quit()
+    sys.exit()
+
+if __name__ == "__main__":
+    main()
+
     
 def options():
      while True:
