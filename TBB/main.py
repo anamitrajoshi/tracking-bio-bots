@@ -25,16 +25,20 @@ def play():
     FPS = 10
 
 
-    cell_size = 40
+    cell_size = 90
     rows, columns = 8, 8
     WIDTH, HEIGHT = columns * cell_size, rows * cell_size
-    BOT_WIDTH, BOT_HEIGHT = 35, 35
-    TREASURE_WIDTH, TREASURE_HEIGHT = 35, 35
+    BOT_WIDTH, BOT_HEIGHT = cell_size - 5, cell_size
+    TREASURE_WIDTH, TREASURE_HEIGHT = cell_size - 5, cell_size
+    WALL_WIDTH, WALL_HEIGHT = cell_size - 5, cell_size - 5
     WIN = pygame.display.set_mode((WIDTH, HEIGHT))
     BOT_IMAGE = pygame.image.load(os.path.join('Assets','bot.png'))
     BOT = pygame.transform.scale(BOT_IMAGE, (BOT_WIDTH, BOT_HEIGHT))
     TREASURE_IMAGE = pygame.image.load(os.path.join('Assets','treasure.png'))
     TREASURE = pygame.transform.scale(TREASURE_IMAGE, (TREASURE_WIDTH, TREASURE_HEIGHT))
+
+    WALL_IMAGE = pygame.image.load(os.path.join('Assets','wall_image.jpg'))
+    WALL_IMAGE = pygame.transform.scale(WALL_IMAGE, (cell_size, cell_size))
 
     TROPHY_WIDTH, TROPHY_HEIGHT = 40, 60
     TROPHY_IMAGE = pygame.image.load(os.path.join('Assets','treasure.png'))
@@ -97,7 +101,8 @@ def play():
         all_walls = add_walls(wall_vals)
         for wall in all_walls:
             j, i = wall
-            pygame.draw.rect(screen, GRAY , (j * cell_size, (rows - i -1) * cell_size, cell_size, cell_size))
+            screen.blit(WALL_IMAGE, (j * cell_size, (rows - i - 1) * cell_size))
+
     
 
 
@@ -158,14 +163,13 @@ def play():
         global screen, cell_size, rows, columns, wall_vals, stuck_timer
 
         pygame.init()
-
+        cell_size = 90
         rows = 8
         columns = 8
         wall_vals = [[1, 6, 3, 6], [2, 4, 2, 4], [4, 2, 7, 2]]
-        stuck_timer = 0
-
-        bot = pygame.Rect(1, 280, BOT_WIDTH, BOT_HEIGHT)
-        treasure = pygame.Rect(280, 0, TREASURE_WIDTH, TREASURE_HEIGHT)
+        
+        bot = pygame.Rect(1, cell_size*rows - cell_size, BOT_WIDTH, BOT_HEIGHT)
+        treasure = pygame.Rect(cell_size*columns - cell_size, 0, TREASURE_WIDTH, TREASURE_HEIGHT)
         
 
         screen = pygame.display.set_mode((WIDTH, HEIGHT))
