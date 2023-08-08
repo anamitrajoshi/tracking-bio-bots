@@ -203,7 +203,8 @@ def play():
         cell_size = 90
         rows = 8
         columns = 8
-        wall_vals = [[1, 6, 3, 6], [2, 4, 2, 4], [4, 2, 7, 2]]
+        all_wall_vals = [[[1, 6, 3, 6], [2, 4, 2, 4], [4, 2, 7, 2]], [[1, 6, 5, 6], [4, 4, 7, 4], [7, 5, 7, 6], [0, 1, 2, 1]]]
+        wall_vals = all_wall_vals[1]
         
         bot = pygame.Rect(1, cell_size*rows - cell_size, BOT_WIDTH, BOT_HEIGHT)
         treasure = pygame.Rect(cell_size*columns - cell_size, 0, TREASURE_WIDTH, TREASURE_HEIGHT)
@@ -219,7 +220,7 @@ def play():
         start_time = pygame.time.get_ticks()
         while running:
             clock.tick(FPS)
-            timer_interval = 8000
+            timer_interval = 10000
             MENU_MUSIC.play()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -240,7 +241,7 @@ def play():
                 loss()
             
                     
-
+ 
             pygame.display.flip()
 
         pygame.quit()
