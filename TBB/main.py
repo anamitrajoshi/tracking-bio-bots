@@ -3,6 +3,7 @@ import pygame
 import sys
 pygame.mixer.init()
 import os
+import random
 
 pygame.init()
 
@@ -85,7 +86,7 @@ def play():
     def bot_movement(grid, keys_pressed, bot, wall_vals):
         new_bot = bot.copy()
 
-        if keys_pressed[pygame.K_RIGHT] and bot.x + 40 + bot.width < WIDTH:
+        if keys_pressed[pygame.K_RIGHT] and bot.x + cell_size + bot.width + 10 < WIDTH:
             new_bot.x += cell_size
         if keys_pressed[pygame.K_UP] and bot.y - 1 > 0:
             new_bot.y -= cell_size
@@ -203,8 +204,8 @@ def play():
         cell_size = 90
         rows = 8
         columns = 8
-        all_wall_vals = [[[1, 6, 3, 6], [2, 4, 2, 4], [4, 2, 7, 2]], [[1, 6, 5, 6], [4, 4, 7, 4], [7, 5, 7, 6], [0, 1, 2, 1]]]
-        wall_vals = all_wall_vals[1]
+        all_wall_vals = [[[1, 6, 3, 6], [2, 4, 2, 4], [4, 2, 7, 2]], [[1, 6, 5, 6], [4, 4, 7, 4], [7, 5, 7, 6], [0, 1, 2, 1]], [[0, 1, 1, 1], [3, 5, 7, 5], [7, 4, 7, 6], [2, 7, 5, 7]]]
+        wall_vals = all_wall_vals[2]
         
         bot = pygame.Rect(1, cell_size*rows - cell_size, BOT_WIDTH, BOT_HEIGHT)
         treasure = pygame.Rect(cell_size*columns - cell_size, 0, TREASURE_WIDTH, TREASURE_HEIGHT)
