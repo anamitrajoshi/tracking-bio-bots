@@ -86,7 +86,7 @@ def play():
     def bot_movement(grid, keys_pressed, bot, wall_vals):
         new_bot = bot.copy()
 
-        if keys_pressed[pygame.K_RIGHT] and bot.x + cell_size + bot.width + 10 < WIDTH:
+        if keys_pressed[pygame.K_RIGHT] and bot.x + cell_size + bot.width < WIDTH:
             new_bot.x += cell_size
         if keys_pressed[pygame.K_UP] and bot.y - 1 > 0:
             new_bot.y -= cell_size
@@ -97,7 +97,7 @@ def play():
 
         
         for wall in wall_vals:
-            wall_rect = pygame.Rect(wall[0] * cell_size, (rows - wall[3] - 1) * cell_size, (wall[2] - wall[0] + 1) * cell_size, cell_size)
+            wall_rect = pygame.Rect(wall[0] * cell_size, (rows - wall[3] - 1) * cell_size , (wall[2] - wall[0] + 1) * cell_size, cell_size)
             if new_bot.colliderect(wall_rect):
                 return
 
@@ -204,8 +204,8 @@ def play():
         cell_size = 90
         rows = 8
         columns = 8
-        all_wall_vals = [[[1, 6, 3, 6], [2, 4, 2, 4], [4, 2, 7, 2]], [[1, 6, 5, 6], [4, 4, 7, 4], [7, 5, 7, 6], [0, 1, 2, 1]], [[0, 1, 1, 1], [3, 5, 7, 5], [7, 4, 7, 6], [2, 7, 5, 7]]]
-        wall_vals = all_wall_vals[2]
+        all_wall_vals = [[[1, 6, 3, 6], [2, 4, 2, 4], [4, 2, 7, 2]], [[1, 6, 5, 6], [4, 4, 7, 4], [7, 5, 7, 5],[7, 6, 7, 6], [0, 1, 2, 1]], [[0, 1, 1, 1], [3, 5, 7, 5], [7, 4, 7, 4],[7, 6, 7, 6], [2, 7, 5, 7]],[[1,2,5,2],[1,6,4,6],[6,6,7,6],[6,4,6,4],[6,5,6,5],[6,3,6,3]]]
+        wall_vals = random.choice(all_wall_vals[1:])
         
         bot = pygame.Rect(1, cell_size*rows - cell_size, BOT_WIDTH, BOT_HEIGHT)
         treasure = pygame.Rect(cell_size*columns - cell_size, 0, TREASURE_WIDTH, TREASURE_HEIGHT)
